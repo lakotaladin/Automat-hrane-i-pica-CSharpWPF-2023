@@ -1,0 +1,93 @@
+﻿<Window x:Class="Automat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Automat" Height="700" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Grid za prikaz trenutnog vremena i radnog vremena -->
+        <Grid Background="LightBlue">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="AUTOMAT HRANE I PIĆA" FontSize="20" FontWeight="Bold" Margin="5"/>
+            </StackPanel>
+            <!-- Naslov i ikonica sata -->
+            <StackPanel Orientation="Horizontal">
+                <Image Source="D:\Laki Podaci\Fakultet\IV semestar 2020 2021\Objektno orjentisano programiranje 2 C#\Projekat\Resources\sat.png" Width="20" Height="20" Margin="5"/>
+                <!-- Prikaz trenutnog vremena -->
+                <TextBlock x:Name="vremeTextBlock" Grid.Column="1" Text="" FontSize="16" FontWeight="Bold" Margin="7"/>
+            </StackPanel>
+
+
+
+            <!-- Prikaz radnog vremena -->
+            <TextBlock x:Name="radnoVremeTextBlock" Grid.Column="2"  FontWeight="Bold" Text="Radno vreme: 08:00h - 21:00h" FontSize="16" Margin="5"/>
+        </Grid>
+
+        <!-- Grid koji sadrži proizvode (grid1) i dugmice (grid2) -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70*"/>
+                <ColumnDefinition Width="30*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Prvi pregled (70%) -->
+            <ScrollViewer Grid.Column="0">
+                <WrapPanel x:Name="stackPanel" Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+            </ScrollViewer>
+
+            <!-- Drugi pregled (30%) -->
+            <Grid x:Name="grid2" Grid.Column="1" Background="LightGray">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+
+                <!-- Statička poruka iznad inputa -->
+                <TextBlock Text="Unesite šifru artikla ovde:" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Margin="1"/>
+
+                <!-- Polje za prikaz brojeva iznad dugmica -->
+                <TextBox x:Name="brojeviTextBox" Grid.Row="0" Text="" HorizontalAlignment="Stretch" Margin="5" Padding="10" VerticalAlignment="Bottom"  FontSize="20"/>
+
+
+                <!-- Dugmici sa brojevima -->
+                <Grid Grid.Row="2" Height="400" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" Content="1" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="0" Grid.Column="1" Content="2" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="0" Grid.Column="2" Content="3" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="1" Grid.Column="0" Content="4" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="1" Grid.Column="1" Content="5" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="1" Grid.Column="2" Content="6" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="2" Grid.Column="0" Content="7" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="2" Grid.Column="1" Content="8" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="2" Grid.Column="2" Content="9" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="3" Grid.Column="0" Content="Briši" Background="Red" Foreground="White" Click="Brisi_Click" FontSize="25"/>
+                    <Button Grid.Row="3" Grid.Column="1" Content="0" Click="Broj_Click" FontSize="25"/>
+                    <Button Grid.Row="3" Grid.Column="2" Content="Potvrdi" Background="Green" Foreground="White" Click="Potvrdi_Click" FontSize="25"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
