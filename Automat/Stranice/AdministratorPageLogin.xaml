@@ -40,16 +40,17 @@
                 <TextBox x:Name="Iproizvod" Width="200" Height="30" Margin="0 0 15 0" FontSize="25" BorderBrush="LightGray" />
                 <TextBlock Text="Kredit:"  TextAlignment="Center" FontSize="25" Foreground="DimGray" />
                 <TextBox x:Name="cena" Width="200" Height="30" Margin="0 0 15 0" FontSize="25" BorderBrush="LightGray" />
+                <TextBlock Text="Sifra (broj):"  TextAlignment="Center" FontSize="25" Margin="0" Foreground="DimGray" />
+                <TextBox x:Name="txtBK" Text="{Binding Proiz.Sifra,Mode=TwoWay}" Width="200" Height="30" FontSize="25" Margin="0 0 15 0" BorderBrush="LightGray" PreviewTextInput="OnPreviewTextInput"/>
             </StackPanel>
 
             <!-- Elementi druge kolone -->
             <StackPanel Grid.Row="0" Grid.Column="1" Background="WhiteSmoke">
-                <TextBlock Text="Sifra:"  TextAlignment="Center" FontSize="25" Margin="0" Foreground="DimGray" />
-                <TextBox x:Name="txtBK" Text="{Binding Proiz.Sifra,Mode=TwoWay}" Width="200" Height="30" FontSize="25" Margin="0 0 15 0" BorderBrush="LightGray" PreviewTextInput="OnPreviewTextInput"/>
+                
                 <TextBlock Text="Kolicina:"   TextAlignment="Center" FontSize="25" Margin="20 10 15 0" Foreground="DimGray" />
                 <TextBox x:Name="lager" Width="200" Height="30" Margin="10 0 15 0" FontSize="25" BorderBrush="LightGray" />
                 <TextBlock Text="Opis:" TextAlignment="Center"  FontSize="25" Margin="20 10 15 0" Foreground="DimGray" />
-                <TextBox x:Name="opis" Width="200" Height="30" Margin="10 0 15 0" FontSize="25" BorderBrush="LightGray" />
+                <TextBox x:Name="opis" Width="350" Height="200" Margin="10 0 15 0" FontSize="25" BorderBrush="LightGray" />
             </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="2" Background="WhiteSmoke">

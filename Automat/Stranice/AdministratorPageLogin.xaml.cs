@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace Automat.Stranice
 {
-    public partial class AdministratorPageLogin : Page
+    public partial class AdministratorPageLogin : Page, INotifyPropertyChanged
     {
         public AdministratorPageLogin(string Ime)
         {
@@ -27,12 +27,12 @@ namespace Automat.Stranice
         private Proizvod proizvod;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Proizvod? Proiz
+        public Proizvod Proiz
         {
             get { return proizvod; }
             set { proizvod = value; OnPropertyChanged(); }
@@ -55,6 +55,8 @@ namespace Automat.Stranice
             cena.Text = "";
             lager.Text = "";
             opis.Text = "";
+            Proiz.Slika = null;
+            imgPreview.Source = null;
 
             Proiz = new Proizvod();
         }
