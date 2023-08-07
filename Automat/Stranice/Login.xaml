@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Automat.Stranice"
         mc:Ignorable="d" x:Name="main"
-        Title="Login" Height="800" Width="1200">
+        Title="Administrator login" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid>
         <!-- Postavite sliku kao pozadinu -->
         <Image Source="D:\Laki Podaci\Fakultet\IV semestar 2020 2021\Objektno orjentisano programiranje 2 C#\Projekat\Resources/adminn.jpg" Stretch="Fill" />

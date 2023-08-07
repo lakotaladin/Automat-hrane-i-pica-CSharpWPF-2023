@@ -13,7 +13,8 @@ namespace Automat.Modeli
         private int lager;
         private string opis;
         private string sifra;
-        private int id; // Dodato polje Id
+        private int id;
+        private float promocija;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
@@ -39,10 +40,11 @@ namespace Automat.Modeli
             cena = 0;
             lager = 0;
             opis = "";
-            id = 0; // Inicijalna vrednost za Id
+            id = 0;
+            promocija = 0;
         }
 
-        public Proizvod(string slika, string ime, double cena, int lager, string opis)
+        public Proizvod(string slika, string ime, double cena, int lager, string opis, float promocija)
         {
             this.slika = slika;
             this.ime = ime;
@@ -50,6 +52,7 @@ namespace Automat.Modeli
             this.lager = lager;
             this.opis = opis;
             id = 0; // Inicijalna vrednost za Id
+            this.promocija = promocija;
         }
 
         public event EventHandler Kliknuo;
@@ -83,6 +86,12 @@ namespace Automat.Modeli
         {
             get { return lager; }
             set { lager = value; OnPropertyChanged(); }
+        }
+
+        public float Promocija
+        {
+            get { return promocija; }
+            set { promocija = value; OnPropertyChanged(); }
         }
 
         public virtual void OnKliknuo()

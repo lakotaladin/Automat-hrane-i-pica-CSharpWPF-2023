@@ -84,13 +84,13 @@ namespace Automat.Modeli
                     Proizvod p = new Proizvod
                     {
                         Sifra = r["sifra"].ToString(),
-                        Cena = 0, // postavi na neku inicijalnu vrednost
+                        Cena = 0,
                         Ime = r["ime"].ToString(),
                         Slika = r["slika"].ToString()
                     };
 
-                    int CenaValue;
-                    if (int.TryParse(r["Cena"].ToString(), out CenaValue))
+                    double CenaValue;
+                    if (double.TryParse(r["Cena"].ToString(), out CenaValue))
                     {
                         p.Cena = CenaValue;
                     }
@@ -105,10 +105,21 @@ namespace Automat.Modeli
                         p.Cena = double.Parse(r["cena"].ToString());
                         p.Lager = int.Parse(r["lager"].ToString());
                         p.Opis = r["opis"].ToString();
+
+                        float PromocijaValue;
+                        if (float.TryParse(r["promocija"].ToString(), out PromocijaValue))
+                        {
+                            p.Promocija = PromocijaValue;
+                        }
+                        else
+                        {
+                            // Ukoliko vrednost za 'Promocija' nije ispravna, postavi na nulu
+                            p.Promocija = 0;
+                        }
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("Neuspesno citanje proizvoda iz baze");
+                        MessageBox.Show("Neuspešno čitanje proizvoda iz baze");
                         MessageBox.Show(e.Message);
                     }
                     proizvodi.Add(p);
@@ -133,9 +144,9 @@ namespace Automat.Modeli
             try
             {
                 conn.Open();
-                comm.CommandText = $"INSERT INTO [dbo].[Proizvod] ([sifra],[slika],[opis],[ime],[cena],[lager]) VALUES('{p.Sifra}','{p.Slika}','{p.Opis}','{p.Ime}','{p.Cena}','{p.Lager}')";
+                comm.CommandText = $"INSERT INTO [dbo].[Proizvod] ([sifra],[slika],[opis],[ime],[cena],[lager],[promocija]) VALUES('{p.Sifra}','{p.Slika}','{p.Opis}','{p.Ime}','{p.Cena}','{p.Lager}','{p.Promocija.ToString().Replace(',', '.')}')";
                 comm.ExecuteNonQuery();
-                MessageBox.Show("Uspesno dodavanje novog proizvoda");
+                MessageBox.Show("Uspešno dodavanje novog proizvoda");
             }
             catch (SqlException e)
             {
@@ -155,7 +166,7 @@ namespace Automat.Modeli
             try
             {
                 conn.Open();
-                comm.CommandText = $"UPDATE [dbo].[Proizvod] SET [sifra]='{p.Sifra}',[slika]='{p.Slika}',[Ime]='{p.Ime}',[Cena]='{p.Cena}',[Lager]='{p.Lager}' WHERE [sifra]='{staraSifra}'";
+                comm.CommandText = $"UPDATE [dbo].[Proizvod] SET [sifra]='{p.Sifra}',[slika]='{p.Slika}',[Ime]='{p.Ime}',[Cena]='{p.Cena}','{p.Lager}','{p.Promocija.ToString().Replace(',', '.')}' WHERE [sifra]='{staraSifra}'";
                 comm.ExecuteNonQuery();
             }
             catch (SqlException e)
@@ -178,7 +189,7 @@ namespace Automat.Modeli
                 conn.Open();
                 comm.CommandText = $"DELETE FROM [dbo].[Proizvod] WHERE [sifra]='{sifra}'";
                 comm.ExecuteNonQuery();
-                MessageBox.Show("Uspesno brisanje proizvoda");
+                MessageBox.Show("Uspešno brisanje proizvoda");
             }
             catch (SqlException e)
             {

@@ -46,6 +46,15 @@ namespace Automat.Stranice
             Proiz.Opis = opis.Text;
             Proiz.Cena = float.Parse(cena.Text);
 
+            if (!string.IsNullOrEmpty(promocija.Text))
+            {
+                Proiz.Promocija = float.Parse(promocija.Text);
+            }
+            else
+            {
+                Proiz.Promocija = 0;
+            }
+
             db.UnesiProizvod(Proiz);
             Ocitaj_proizvode();
 
@@ -55,6 +64,7 @@ namespace Automat.Stranice
             cena.Text = "";
             lager.Text = "";
             opis.Text = "";
+            promocija.Text = "";
             Proiz.Slika = null;
             imgPreview.Source = null;
 
@@ -152,6 +162,17 @@ namespace Automat.Stranice
             }
         }
 
+        // Funkcija za input Opis da može da primi max 200 karaktera
+        private void Opis_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text.Length > 200)
+            {
+                textBox.Text = textBox.Text.Substring(0, 200);
+                textBox.SelectionStart = textBox.Text.Length;
+            }
+        }
+
         private void BtnPretrazi_Click(object sender, RoutedEventArgs e)
         {
             string pretraga = txtPretraga.Text.ToLower();
@@ -176,10 +197,10 @@ namespace Automat.Stranice
             lvProizvodi.ItemsSource = Proizvodi;
         }
 
-        // Dodat događaj za unos samo brojeva u TextBox txtBK
+        // Dodat događaj za unos samo brojeva u TextBox txtBK i promocija
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (!int.TryParse(e.Text, out _))
+            if (!int.TryParse(e.Text, out _) && e.Text != ".")
             {
                 e.Handled = true;
             }

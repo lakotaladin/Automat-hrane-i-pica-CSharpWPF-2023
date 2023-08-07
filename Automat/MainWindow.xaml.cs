@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Automat
@@ -43,10 +44,35 @@ namespace Automat
                 proizvodPanel.Orientation = Orientation.Vertical;
                 proizvodPanel.Margin = new Thickness(10);
 
+
+                // Prikaži popust ako postoji
+                if (b[i].Promocija > 0)
+                {
+                    Grid popustGrid = new Grid();
+                    popustGrid.Width = 60;
+                    popustGrid.Height = 30;
+                    popustGrid.Background = Brushes.Red;
+                    //popustGrid.Margin = new Thickness(1);
+                    popustGrid.HorizontalAlignment = HorizontalAlignment.Right;
+                    popustGrid.VerticalAlignment = VerticalAlignment.Top;
+
+                    TextBlock popustTextBlock = new TextBlock();
+                    popustTextBlock.Text = $"- {b[i].Promocija}%";
+                    popustTextBlock.Foreground = Brushes.White;
+                    popustTextBlock.FontWeight = FontWeights.Bold;
+                    popustTextBlock.FontSize = 18;
+                    popustTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                    popustTextBlock.VerticalAlignment = VerticalAlignment.Center;
+
+                    popustGrid.Children.Add(popustTextBlock);
+
+                    proizvodPanel.Children.Add(popustGrid);
+                }
+
                 // Prikaz slike i njena velicina
                 Image slikaa = new Image();
-                slikaa.Width = 100;
-                slikaa.Height = 100;
+                slikaa.Width = 200;
+                slikaa.Height = 200;
 
                 if (System.IO.File.Exists(b[i].Slika))
                 {
@@ -65,32 +91,35 @@ namespace Automat
 
                 // Kredit
                 TextBlock kreditTextBlock = new TextBlock();
-                kreditTextBlock.Text = $"Kredit: {b[i].Cena.ToString()} RSD";
-                kreditTextBlock.FontSize = 16;
+                kreditTextBlock.Text = $"Kredit: {b[i].Cena.ToString()} CRD";
+                kreditTextBlock.FontSize = 18;
                 kreditTextBlock.Margin = new Thickness(5);
                 kreditTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
                 kreditTextBlock.FontWeight = FontWeights.Bold; // Zadebljaj tekst
                 proizvodPanel.Children.Add(kreditTextBlock);
 
-                // Sifra proizvoda
-                Label sifraProizvoda = new Label();
-                sifraProizvoda.Content = $"Šifra: {b[i].Sifra}";
-                sifraProizvoda.FontSize = 12;
-                sifraProizvoda.FontWeight = FontWeights.Bold;
-                sifraProizvoda.HorizontalAlignment = HorizontalAlignment.Left;
-                proizvodPanel.Children.Add(sifraProizvoda);
+                
 
                 // Naziv proizvoda
                 Label nazivProizvoda = new Label();
                 nazivProizvoda.Content = $"Naziv: {b[i].Ime}";
-                nazivProizvoda.FontSize = 12;
+                nazivProizvoda.FontSize = 16;
                 nazivProizvoda.FontWeight = FontWeights.Bold;
                 nazivProizvoda.HorizontalAlignment = HorizontalAlignment.Left;
                 proizvodPanel.Children.Add(nazivProizvoda);
 
+                // Sifra proizvoda
+                Label sifraProizvoda = new Label();
+                sifraProizvoda.Content = $"Šifra: {b[i].Sifra}";
+                sifraProizvoda.FontSize = 16;
+                sifraProizvoda.FontWeight = FontWeights.Bold;
+                sifraProizvoda.HorizontalAlignment = HorizontalAlignment.Left;
+                proizvodPanel.Children.Add(sifraProizvoda);
+
                 // Opis
                 Label opis = new Label();
                 opis.Content = $"Opis: {b[i].Opis}";
+                sifraProizvoda.FontSize = 16;
                 opis.Foreground = Brushes.Black;
                 opis.HorizontalAlignment = HorizontalAlignment.Left;
                 proizvodPanel.Children.Add(opis);
@@ -100,11 +129,18 @@ namespace Automat
                 kolicina.Text = b[i].Lager.ToString();
                 kolicina.Margin = new Thickness(5); // Dodaj marginu
                 kolicina.Width = 30;
+                kolicina.TextAlignment = TextAlignment.Center;
                 proizvodPanel.Children.Add(kolicina);
 
                 // Dugme
                 Button dugme = new Button();
-                dugme.Margin = new Thickness(7); // Dodaj marginu
+                dugme.Width = 200;
+                dugme.Height = 30;
+                dugme.FontSize = 18;
+                dugme.Foreground = Brushes.Black;
+                dugme.FontWeight = FontWeights.Bold;
+                dugme.Background = Brushes.Gold;
+                dugme.Margin = new Thickness(0); // Dodaj marginu
                 dugme.HorizontalAlignment = HorizontalAlignment.Center;
                 dugme.Content = "Dodaj u korpu+";
 
