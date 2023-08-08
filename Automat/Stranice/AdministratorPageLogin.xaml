@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Automat.Stranice"
       mc:Ignorable="d"
-      d:DesignHeight="1920" d:DesignWidth="1080" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+      d:DesignHeight="1400" d:DesignWidth="1680" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
       Title="Administrator panel">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Background="WhiteSmoke">
@@ -78,7 +78,7 @@
                 <Button x:Name="btnPretrazi" Click="BtnPretrazi_Click" Content="Pretraži" Height="30" FontSize="20" Width="100" Background="DodgerBlue" Foreground="White" />
                 <Button x:Name="btnObrisi" Click="BtnObrisi_Click" Content="Obriši" Height="30" FontSize="20" Width="100" Background="Red" Foreground="White" Margin="10 0 0 0" />
             </StackPanel>
-            <ListView Margin="0 30" x:Name="lvProizvodi" SelectionChanged="LvProizvodi_SelectionChanged" Height="200" HorizontalAlignment="Center" Width="auto" FontSize="20" BorderBrush="LightGray">
+            <ListView Margin="0 30" x:Name="lvProizvodi" SelectionChanged="LvProizvodi_SelectionChanged" Height="400" HorizontalAlignment="Center" Width="auto" FontSize="20" BorderBrush="LightGray">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Id" Width="100" DisplayMemberBinding="{Binding Id}" />

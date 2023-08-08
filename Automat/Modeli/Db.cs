@@ -21,6 +21,29 @@ namespace Automat.Modeli
             comm = conn.CreateCommand();
         }
 
+        // dodata mogucnost pracenja stanja lagera, to je radjeno u MainWindow.xaml.cs datoteci da bih pratio lager
+        public void SaveChanges()
+        {
+            try
+            {
+                conn.Open();
+                comm.CommandText = "commit";
+                comm.ExecuteNonQuery();
+                MessageBox.Show("Promene su sačuvane.");
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         public void DodajKorisnika(Korisnik korisnik)
         {
             try
