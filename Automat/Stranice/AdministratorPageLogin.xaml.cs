@@ -19,6 +19,10 @@ namespace Automat.Stranice
             InitializeComponent();
             Proiz = new Proizvod();
             Ocitaj_proizvode();
+
+            // Pocetne vrednosti za doba dana
+            startTimePeriodComboBox.SelectedIndex = 0;
+            endTimePeriodComboBox.SelectedIndex = 0;
         }
 
         public ObservableCollection<Proizvod> Proizvodi { set; get; }
@@ -45,6 +49,7 @@ namespace Automat.Stranice
             Proiz.Lager = int.Parse(lager.Text);
             Proiz.Opis = opis.Text;
             Proiz.Cena = float.Parse(cena.Text);
+            Proiz.Promocija = float.Parse(promocija.Text);
 
             if (!string.IsNullOrEmpty(promocija.Text))
             {
@@ -107,10 +112,23 @@ namespace Automat.Stranice
 
         private void BtnIzmeni_Click(object sender, RoutedEventArgs e)
         {
-            var temp = Proiz.Sifra;
             txtBK.IsReadOnly = false;
+            Proiz.Ime = Iproizvod.Text;
+            Proiz.Sifra = txtBK.Text;
+            Proiz.Lager = int.Parse(lager.Text);
+            Proiz.Opis = opis.Text;
+            Proiz.Cena = float.Parse(cena.Text);
+            Proiz.Promocija = float.Parse(promocija.Text);
+            var temp = Proiz.Sifra;
             db.IzmeniProizvod(temp, Proiz);
             lvProizvodi.SelectedItem = null;
+            Iproizvod.Text = string.Empty;
+            txtBK.Text = string.Empty;
+            cena.Text = string.Empty;
+            lager.Text = string.Empty;
+            opis.Text = string.Empty;
+            promocija.Text = string.Empty;
+            imgPreview.Source = null;
             Proiz = null;
             Proiz = new Proizvod();
         }
@@ -123,6 +141,13 @@ namespace Automat.Stranice
                 btnIzbrisi.IsEnabled = true;
                 txtBK.IsReadOnly = true;
                 Proiz = (Proizvod)lvProizvodi.SelectedItem;
+                Iproizvod.Text = Proiz.Ime;
+                txtBK.Text = Proiz.Sifra;
+                cena.Text = Proiz.Cena.ToString();
+                lager.Text = Proiz.Lager.ToString();
+                opis.Text = Proiz.Opis;
+                promocija.Text = Proiz.Promocija.ToString();
+                imgPreview.Source = new BitmapImage(new Uri(Proiz.Slika));
             }
         }
 
@@ -155,6 +180,13 @@ namespace Automat.Stranice
                 db.IzbrisiProizvod((lvProizvodi.SelectedItem as Proizvod).Sifra);
                 Ocitaj_proizvode();
                 lvProizvodi.SelectedItem = null;
+                Iproizvod.Text =string.Empty;
+                txtBK.Text = string.Empty;
+                cena.Text = string.Empty;
+                lager.Text = string.Empty;
+                opis.Text = string.Empty;
+                promocija.Text = string.Empty;
+                imgPreview.Source = null ;
             }
             else
             {
@@ -205,5 +237,46 @@ namespace Automat.Stranice
                 e.Handled = true;
             }
         }
+
+        private void BtnSacuvajVreme_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime selectedDate = datePicker.SelectedDate ?? DateTime.Today;
+            TimeSpan startTime;
+            TimeSpan endTime;
+
+            if (TimeSpan.TryParse(startTimeTextBox.Text, out startTime) && TimeSpan.TryParse(endTimeTextBox.Text, out endTime))
+            {
+                // Dodajte vrednost perioda (AM ili PM) na vreme
+                if (startTimePeriodComboBox.SelectedItem as string == "PM" && startTime.Hours < 12)
+                {
+                    startTime = startTime.Add(new TimeSpan(12, 0, 0));
+                }
+
+                if (endTimePeriodComboBox.SelectedItem as string == "PM" && endTime.Hours < 12)
+                {
+                    endTime = endTime.Add(new TimeSpan(12, 0, 0));
+                }
+
+                DateTime selectedStartDateTime = selectedDate.Add(startTime);
+                DateTime selectedEndDateTime = selectedDate.Add(endTime);
+
+                // Pozovite ažuriranu metodu iz Db klase za čuvanje vremena rada u bazi
+                db.SacuvajVremeRada(selectedStartDateTime, selectedEndDateTime);
+
+                // Resetujte unose nakon što se vreme sačuva
+                startTimeTextBox.Text = "";
+                endTimeTextBox.Text = "";
+                startTimePeriodComboBox.SelectedIndex = -1;
+                endTimePeriodComboBox.SelectedIndex = -1;
+
+                
+            }
+            else
+            {
+                MessageBox.Show("Unesite validna vremena.");
+            }
+        }
+
+
     }
 }

@@ -27,7 +27,7 @@ namespace Automat.Modeli
             try
             {
                 conn.Open();
-                comm.CommandText = "commit";
+                comm.CommandText = "Potvrdjeno";
                 comm.ExecuteNonQuery();
                 MessageBox.Show("Promene su sačuvane.");
             }
@@ -189,7 +189,7 @@ namespace Automat.Modeli
             try
             {
                 conn.Open();
-                comm.CommandText = $"UPDATE [dbo].[Proizvod] SET [sifra]='{p.Sifra}',[slika]='{p.Slika}',[Ime]='{p.Ime}',[Cena]='{p.Cena}','{p.Lager}','{p.Promocija.ToString().Replace(',', '.')}' WHERE [sifra]='{staraSifra}'";
+                comm.CommandText = $"UPDATE [dbo].[Proizvod] SET [sifra]='{p.Sifra}',[slika]='{p.Slika}',[ime]='{p.Ime}',[cena]='{p.Cena}',[lager]='{p.Lager}',[promocija]='{p.Promocija.ToString().Replace(',', '.')}' WHERE [sifra]='{staraSifra}'";
                 comm.ExecuteNonQuery();
             }
             catch (SqlException e)
@@ -204,6 +204,63 @@ namespace Automat.Modeli
                 }
             }
         }
+
+        // Logika za radno vreme automata
+        public void SacuvajVremeRada(DateTime vremePocetka, DateTime vremeZavrsetka)
+        {
+            try
+            {
+                conn.Open();
+                comm.CommandText = $"INSERT INTO [dbo].[VremeRadaAutomata] ([VremePocetka], [VremeZavrsetka], [Radi]) VALUES ('{vremePocetka.ToString("yyyy-MM-dd HH:mm:ss")}', '{vremeZavrsetka.ToString("yyyy-MM-dd HH:mm:ss")}', 1)";
+                comm.ExecuteNonQuery();
+                MessageBox.Show("Vreme rada automata je sačuvano.");
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        // Poslednje ubaceno vreme prikazi
+
+        public DateTime GetLastInsertedTime()
+        {
+            DateTime lastInsertedTime = DateTime.MinValue;
+
+            try
+            {
+                conn.Open();
+                comm.CommandText = "SELECT TOP 1 [VremeZavrsetka] FROM VremeRadaAutomata ORDER BY [ID] DESC";
+                object result = comm.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    lastInsertedTime = Convert.ToDateTime(result);
+                }
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+
+            return lastInsertedTime;
+        }
+
+
 
         public void IzbrisiProizvod(string sifra)
         {

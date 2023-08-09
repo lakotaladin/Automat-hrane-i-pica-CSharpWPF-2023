@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Automat.Stranice"
       mc:Ignorable="d"
-      d:DesignHeight="1400" d:DesignWidth="1680" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+      d:DesignHeight="1500" d:DesignWidth="1680" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
       Title="Administrator panel">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Background="WhiteSmoke">
@@ -14,8 +14,32 @@
             <Button Content="Odjavi me" Width="150" FontSize="20" Margin="0 0 20 0" Click="Button_Click_1" Background="Gray" Foreground="White" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5"  VerticalAlignment="Center" Height="40">
-            <TextBlock Text="Dodaj proizvod" FontWeight="DemiBold" FontSize="30" Foreground="SteelBlue" />
+            <!-- Naslov dodaj prozivod -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5"  VerticalAlignment="Center" Height="40">
+                <TextBlock Text="-- Podešavanje vremena rada automata --" FontWeight="DemiBold" FontSize="30" Foreground="SteelBlue" />
+            </StackPanel>
+
+            <!-- Vreme rada automata -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 5 30">
+                <DatePicker x:Name="datePicker" Width="200" Margin="10" SelectedDate="{Binding SelectedDate}" />
+                <TextBlock Text="Unesite vreme početka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="0 0 10 0" />
+                <TextBox x:Name="startTimeTextBox" Width="200" Height="30" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <ComboBox x:Name="startTimePeriodComboBox" Width="50" Margin="10" VerticalAlignment="Center">
+                    <ComboBoxItem>AM</ComboBoxItem>
+                    <ComboBoxItem>PM</ComboBoxItem>
+                </ComboBox>
+                <TextBlock Text="Unesite vreme završetka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="10" />
+                <TextBox x:Name="endTimeTextBox" Width="200" Height="30" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <ComboBox x:Name="endTimePeriodComboBox" Width="50" Margin="10" VerticalAlignment="Center">
+                    <ComboBoxItem>AM</ComboBoxItem>
+                    <ComboBoxItem>PM</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <Button Content="Sačuvaj vreme" Click="BtnSacuvajVreme_Click" Width="200" Height="50" FontSize="20" Background="DodgerBlue" Foreground="White" Margin="0 20 15 40" />
+            
+            <!-- Naslov dodaj prozivod -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5"  VerticalAlignment="Center" Height="40">
+            <TextBlock Text="-- Dodaj proizvod --" FontWeight="DemiBold" FontSize="30" Foreground="SteelBlue" />
         </StackPanel>
 
         <Grid Background="WhiteSmoke">
@@ -40,19 +64,19 @@
                 <TextBox x:Name="Iproizvod" Width="300" Height="35" Margin="0 20 10 25" FontSize="20" TextAlignment="Center" BorderBrush="LightGray" />
                 <TextBlock Text="Kredit:"  TextAlignment="Center" FontSize="25" Foreground="DimGray" />
                     <TextBox x:Name="cena" Width="300" Height="35" Margin="0 20 10 25" TextAlignment="Center" FontSize="25" BorderBrush="LightGray" />
-                <TextBlock Text="Šifra (broj):"  TextAlignment="Center" FontSize="25" Margin="0" Foreground="DimGray" />
-                    <TextBox x:Name="txtBK" Text="{Binding Proiz.Sifra,Mode=TwoWay}" Width="300" Height="35"  TextAlignment="Center" FontSize="20" Margin="0 20 15 0" BorderBrush="LightGray" PreviewTextInput="OnPreviewTextInput"/>
+                <TextBlock Text="Šifra (broj):"  TextAlignment="Center" FontSize="25" Margin="0 0 0 10" Foreground="DimGray" />
+                    <TextBox x:Name="txtBK" Text="{Binding Proiz.Sifra,Mode=TwoWay}" Width="300" Height="35"  TextAlignment="Center" FontSize="20" Margin="0 20 15 20" BorderBrush="LightGray" PreviewTextInput="OnPreviewTextInput"/>
                 <TextBlock Text="Promocija (%):" FontSize="25" TextAlignment="Center" Foreground="DimGray" />
                     <TextBox x:Name="promocija" Width="300" Height="35" Margin="0 20 10 25" TextAlignment="Center" PreviewTextInput="OnPreviewTextInput" FontSize="25" BorderBrush="LightGray" />
                 </StackPanel>
 
-            <!-- Elementi druge kolone -->
+                <!-- Elementi druge kolone -->
             <StackPanel Grid.Row="0" Grid.Column="1" Background="WhiteSmoke">
                 
                 <TextBlock Text="Lager:"   TextAlignment="Center" FontSize="25" Margin="20 20 15 0" Foreground="DimGray" />
                     <TextBox x:Name="lager" Width="300" Height="40" Margin="10 20 15 0" TextAlignment="Center" FontSize="25" BorderBrush="LightGray" />
                 <TextBlock Text="Opis (max 200 karaktera):" TextAlignment="Center"  FontSize="25" Margin="20 10 15 0" Foreground="DimGray" />
-                <TextBox x:Name="opis" Width="350" Height="200" Margin="10 20 15 0" FontSize="25" BorderBrush="LightGray" TextChanged="Opis_TextChanged" />
+                    <TextBox x:Name="opis" Width="350" Height="200" Margin="10 20 15 0" FontSize="25" BorderBrush="LightGray" TextWrapping="Wrap" MaxLength="300" TextChanged="Opis_TextChanged" />
                 </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="2" Background="WhiteSmoke">
@@ -64,7 +88,10 @@
 
         </Grid>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="70 30 0 0">
+          
+            
+            <!--Dugmici za izmene u bazu-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="70 30 0 0">
             <Button x:Name="btnDodaj" Click="Button_Click" Content="Dodaj+" Height="50" FontSize="25" Width="200" Background="DodgerBlue" Foreground="White" />
             <Button x:Name="btnIzmeni" Click="BtnIzmeni_Click" Visibility="Visible" Height="50" IsEnabled="False" Margin="50 0 0 0" FontSize="25" Width="200" Content="Izmeni"  Foreground="White"  />
             <Button x:Name="btnIzbrisi" Content="Izbriši" Click="BtnIzbrisi_Click" Width="200" Height="50" FontSize="25" IsEnabled="False" Margin="50 0 0 0"  Foreground="White"/>
@@ -81,7 +108,7 @@
             <ListView Margin="0 30" x:Name="lvProizvodi" SelectionChanged="LvProizvodi_SelectionChanged" Height="400" HorizontalAlignment="Center" Width="auto" FontSize="20" BorderBrush="LightGray">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Id" Width="100" DisplayMemberBinding="{Binding Id}" />
+                        <GridViewColumn Header="Promocija" Width="100" DisplayMemberBinding="{Binding Promocija}" />
                         <GridViewColumn Header="Šifra" Width="200" DisplayMemberBinding="{Binding Sifra}" />
                         <GridViewColumn Header="Ime" Width="200" DisplayMemberBinding="{Binding Ime}" />
                         <GridViewColumn Header="Kredit" Width="200" DisplayMemberBinding="{Binding Cena }" />
