@@ -33,6 +33,10 @@ namespace Automat
         {
             InitializeComponent();
             Window_Loaded(null, null);
+            if(db.RadiLi()==true)
+            radnoVremeTextBlock.Text = "Radno vreme je od " +db.GetLastInsertedTime1().Hour + ":" + db.GetLastInsertedTime1().Minute + " do " + db.GetLastInsertedTime().Hour + ":" + db.GetLastInsertedTime().Minute ; 
+            else
+                radnoVremeTextBlock.Text ="Automat ne radi";
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);

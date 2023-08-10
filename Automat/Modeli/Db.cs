@@ -259,7 +259,62 @@ namespace Automat.Modeli
 
             return lastInsertedTime;
         }
+        public DateTime GetLastInsertedTime1()
+        {
+            DateTime lastInsertedTime = DateTime.MinValue;
 
+            try
+            {
+                conn.Open();
+                comm.CommandText = "SELECT TOP 1 [VremePocetka] FROM VremeRadaAutomata ORDER BY [ID] DESC";
+                object result = comm.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    lastInsertedTime = Convert.ToDateTime(result);
+                }
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+
+            return lastInsertedTime;
+        }
+        public bool RadiLi()
+        {
+            bool result = false;
+            try
+            {
+                conn.Open();
+                comm.CommandText = "SELECT TOP 1 [Radi] FROM VremeRadaAutomata ORDER BY [ID] DESC";
+                SqlDataReader r = comm.ExecuteReader();
+                while (r.Read())
+                {
+                result =(bool) r["Radi"];
+                 }
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+
+            return result;
+        }
 
 
         public void IzbrisiProizvod(string sifra)
