@@ -28,16 +28,23 @@ namespace Automat
         private List<Button> dugmadDodajUKorpu = new List<Button>();
         private TextBox pretragaTextBox;
 
-
+// Glavni program
         public MainWindow()
         {
             InitializeComponent();
             Window_Loaded(null, null);
-            if(db.RadiLi()==true)
-            radnoVremeTextBlock.Text = "Radno vreme je od " +db.GetLastInsertedTime1().Hour + ":" + db.GetLastInsertedTime1().Minute + " do " + db.GetLastInsertedTime().Hour + ":" + db.GetLastInsertedTime().Minute ; 
-            else
-                radnoVremeTextBlock.Text ="Automat ne radi";
 
+
+            // Prikaz radnog vremena automata
+            if (db.RadiLi() == true) {
+                radnoVremeTextBlock.Text = "Radno vreme je od " + db.GetLastInsertedTime1().Hour + ":" + db.GetLastInsertedTime1().Minute + " do " + db.GetLastInsertedTime().Hour + ":" + db.GetLastInsertedTime().Minute;
+            }
+            else {
+                radnoVremeTextBlock.Text = "Automat ne radi";
+            }
+           
+            
+            //Prikaz trenutnog vremena
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += (sender, e) => vremeTextBlock.Text = DateTime.Now.ToString("HH:mm:ss");
@@ -50,6 +57,7 @@ namespace Automat
             KreirajPretraguUI();
         }
 
+        // Dinamicko kreiranje pretrage
         private void KreirajPretraguUI()
         {
             StackPanel pretragaStackPanel = new StackPanel();
@@ -94,6 +102,7 @@ namespace Automat
             gridpretraga.Children.Insert(0, pretragaStackPanel);
         }
 
+        // Input za pretragu proizvoda
         private void PretragaTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string unetiTekst = pretragaTextBox.Text.Trim();
@@ -111,18 +120,21 @@ namespace Automat
             }
         }
 
+        // Dugme pretrazi
         private void PretragaDugme_Click(object sender, RoutedEventArgs e)
         {
             string trazeniProizvod = pretragaTextBox.Text.Trim();
             PretraziProizvode(trazeniProizvod);
         }
-
+        
+        // Dugme za brisanje vrednosti iz pretrage
         private void BrisanjeDugme_Click(object sender, RoutedEventArgs e)
         {
             pretragaTextBox.Clear();
             PretraziProizvode("");
         }
 
+        // Pretraga proizvoda
         private void PretraziProizvode(string trazeniProizvod)
         {
             ObservableCollection<Proizvod> b = db.GetProizvode();
@@ -214,6 +226,7 @@ namespace Automat
             }
         }
 
+        // Prikaz svih proizvoda (glavni program)
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ObservableCollection<Proizvod> b = db.GetProizvode();
@@ -304,6 +317,7 @@ namespace Automat
             }
         }
 
+        
         private void DodajUKorpu_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = (Button)sender;
@@ -327,6 +341,7 @@ namespace Automat
             }
         }
 
+        // Prikaz korpe u grid2
         private void PrikaziKorpu(object sender, RoutedEventArgs e)
         {
             cartStackPanel.Children.Clear();
@@ -433,6 +448,8 @@ namespace Automat
             cartStackPanel.Children.Add(paymentOptionsPanel);
         }
 
+
+        // Dugme "Potvrdi" za dodavanje proizvoda u korpu
         private async void Potvrdi_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(brojeviTextBox.Text))
@@ -475,10 +492,7 @@ namespace Automat
         }
 
 
-
-
-
-
+        // Dugme za placanje proizvoda
         private void Plati_Click(object sender, RoutedEventArgs e)
         {
             if (korpa.Count == 0)
@@ -518,6 +532,7 @@ namespace Automat
             }
         }
 
+        // Logika za input u kome moze samo da se unosi sifra atikla
         private void Broj_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (brojeviTextBox.Text.Length > 0)
@@ -527,7 +542,7 @@ namespace Automat
             }
         }
 
-        // Event za pritisak na broj
+        // Event za pritisak na broj u grid2
         private void Broj_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button clickedButton)
@@ -675,11 +690,7 @@ namespace Automat
         }
 
 
-
-
-
-
-
+       // Dugme za brisanje proizvoda iz korpe
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button deleteButton && deleteButton.Tag is Proizvod proizvod)
@@ -688,7 +699,8 @@ namespace Automat
                 PrikaziKorpu(null, null);
             }
         }
-
+      
+        // CTRL + D (Admin panel) i CTRL+ R (osvezi ekran proizvoda)
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.D)

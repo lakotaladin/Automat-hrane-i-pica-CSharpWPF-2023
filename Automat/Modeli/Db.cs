@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Automat.Modeli
@@ -21,7 +17,7 @@ namespace Automat.Modeli
             comm = conn.CreateCommand();
         }
 
-        // dodata mogucnost pracenja stanja lagera, to je radjeno u MainWindow.xaml.cs datoteci da bih pratio lager
+        // Dodata mogucnost pracenja stanja lagera, to je radjeno u MainWindow.xaml.cs datoteci da bih pratio stanje lagera
         public void SaveChanges()
         {
             try
@@ -44,28 +40,31 @@ namespace Automat.Modeli
             }
         }
 
-        public void DodajKorisnika(Korisnik korisnik)
-        {
-            try
-            {
-                conn.Open();
-                comm.CommandText = $"INSERT INTO [dbo].[Korisnik] ([korisnickoIme],[lozinka]) VALUES('{korisnik.KorisnickoIme}','{korisnik.Lozinka}')";
-                comm.ExecuteNonQuery();
-                MessageBox.Show("Uspesno dodavanje nove osobe");
-            }
-            catch (SqlException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            finally
-            {
-                if (conn != null)
-                {
-                    conn.Close();
-                }
-            }
-        }
 
+        // Logika za dodavanje korisnika
+       // public void DodajKorisnika(Korisnik korisnik)
+       // {
+         //   try
+           // {
+             //   conn.Open();
+               // comm.CommandText = $"INSERT INTO [dbo].[Korisnik] ([korisnickoIme],[lozinka]) VALUES('{korisnik.KorisnickoIme}','{korisnik.Lozinka}')";
+               // comm.ExecuteNonQuery();
+               // MessageBox.Show("Uspesno dodavanje nove osobe");
+           // }
+           // catch (SqlException e)
+           // {
+            //    MessageBox.Show(e.Message);
+           // }
+           // finally
+           // {
+            //    if (conn != null)
+             //   {
+               //     conn.Close();
+               // }
+          //  }
+      //  }
+
+        // Logika za dohvatanje opodataka od tabele Korisnik
         public Korisnik VratiKorisnika(string Ime)
         {
             Korisnik korisnik = new Korisnik();
@@ -94,6 +93,8 @@ namespace Automat.Modeli
             return korisnik;
         }
 
+
+        // Logika za dohvatanje podataka iz tabele Proizvod
         public ObservableCollection<Proizvod> GetProizvode()
         {
             ObservableCollection<Proizvod> proizvodi = new ObservableCollection<Proizvod>();
@@ -162,6 +163,8 @@ namespace Automat.Modeli
             return proizvodi;
         }
 
+
+        // Logika za unos proizvoda u bazu
         public void UnesiProizvod(Proizvod p)
         {
             try
@@ -184,28 +187,9 @@ namespace Automat.Modeli
             }
         }
 
-        public void IzmeniProizvod(string staraSifra, Proizvod p)
-        {
-            try
-            {
-                conn.Open();
-                comm.CommandText = $"UPDATE [dbo].[Proizvod] SET [sifra]='{p.Sifra}',[slika]='{p.Slika}',[ime]='{p.Ime}',[cena]='{p.Cena}',[lager]='{p.Lager}',[promocija]='{p.Promocija.ToString().Replace(',', '.')}' WHERE [sifra]='{staraSifra}'";
-                comm.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            finally
-            {
-                if (conn != null)
-                {
-                    conn.Close();
-                }
-            }
-        }
+       
 
-        // Logika za radno vreme automata
+        // Radno vreme automata - unos podataka
         public void SacuvajVremeRada(DateTime vremePocetka, DateTime vremeZavrsetka)
         {
             try
@@ -228,7 +212,7 @@ namespace Automat.Modeli
             }
         }
 
-        // Poslednje ubaceno vreme prikazi
+        // Poslednje ubaceno vreme prikazi - vreme kada automat zavrsava sa radom
 
         public DateTime GetLastInsertedTime()
         {
@@ -259,6 +243,9 @@ namespace Automat.Modeli
 
             return lastInsertedTime;
         }
+
+
+        // Pocetak radnog vremena automata
         public DateTime GetLastInsertedTime1()
         {
             DateTime lastInsertedTime = DateTime.MinValue;
@@ -288,6 +275,9 @@ namespace Automat.Modeli
 
             return lastInsertedTime;
         }
+
+
+        // Provera da li automat radi, u bazi postoji bool i na osnovu toga se zna da li radi ili ne radi. Podrazumevana vrednost je 1 (radi)
         public bool RadiLi()
         {
             bool result = false;
@@ -317,6 +307,32 @@ namespace Automat.Modeli
         }
 
 
+
+        // Logika za izmenu podataka od prozivoda 
+        public void IzmeniProizvod(string staraSifra, Proizvod p)
+        {
+            try
+            {
+                conn.Open();
+                comm.CommandText = $"UPDATE [dbo].[Proizvod] SET [sifra]='{p.Sifra}',[slika]='{p.Slika}',[ime]='{p.Ime}',[cena]='{p.Cena}',[lager]='{p.Lager}',[promocija]='{p.Promocija.ToString().Replace(',', '.')}' WHERE [sifra]='{staraSifra}'";
+                comm.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+
+
+        // Logika za brisanje proizvoda iz tabele u Admin panel
         public void IzbrisiProizvod(string sifra)
         {
             try
