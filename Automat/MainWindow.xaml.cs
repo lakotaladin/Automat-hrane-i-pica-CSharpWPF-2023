@@ -13,7 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Documents;
-using System.Printing; 
+using System.Printing;
+
+
 
 
 
@@ -123,7 +125,11 @@ namespace Automat
             pretragaStackPanel.Children.Add(brisanjeDugme);
 
             gridpretraga.Children.Insert(0, pretragaStackPanel);
+           
+
         }
+
+        
 
         // Input za pretragu proizvoda
         private void PretragaTextBox_TextChanged(object sender, TextChangedEventArgs e)
