@@ -48,7 +48,7 @@ namespace Automat.Stranice
             Proiz.Lager = int.Parse(lager.Text);
             Proiz.Opis = opis.Text;
             Proiz.Cena = float.Parse(cena.Text);
-            Proiz.Promocija = float.Parse(promocija.Text);
+            
 
             if (!string.IsNullOrEmpty(promocija.Text))
             {

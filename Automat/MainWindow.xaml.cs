@@ -266,7 +266,7 @@ namespace Automat
             {
                 StackPanel proizvodPanel = new StackPanel();
                 proizvodPanel.Orientation = Orientation.Vertical;
-                proizvodPanel.Margin = new Thickness(5);
+                proizvodPanel.Margin = new Thickness(3);
                
 
                 if (b[i].Promocija > 0)
@@ -332,14 +332,19 @@ namespace Automat
                 sifraProizvoda.HorizontalAlignment = HorizontalAlignment.Left;
                 proizvodPanel.Children.Add(sifraProizvoda);
 
+
                 TextBlock opis = new TextBlock();
                 opis.Text = $"Opis: {b[i].Opis}";
-                opis.FontSize = 14;
+                opis.FontSize = 16;
+                opis.MaxWidth = 260;
+                opis.Background = Brushes.Red;
+                //opis.TextTrimming = TextTrimming.WordEllipsis;
                 opis.TextWrapping = TextWrapping.Wrap;
                 opis.Foreground = Brushes.Black;
                 opis.Margin = new Thickness(0, 0, 0, 15);
                 opis.HorizontalAlignment = HorizontalAlignment.Left;
                 proizvodPanel.Children.Add(opis);
+                
 
 
                 proizvodiStackPanel.Children.Add(proizvodPanel);
@@ -790,7 +795,7 @@ namespace Automat
                 {
                     StackPanel proizvodPanel = new StackPanel();
                     proizvodPanel.Orientation = Orientation.Vertical;
-                    proizvodPanel.Margin = new Thickness(5);
+                    proizvodPanel.Margin = new Thickness(3);
 
                     if (b[i].Promocija > 0)
                     {
@@ -857,9 +862,13 @@ namespace Automat
 
                     TextBlock opis = new TextBlock();
                     opis.Text = $"Opis: {b[i].Opis}";
-                    opis.FontSize = 14;
+                    opis.FontSize = 16;
+                    opis.MaxWidth = 260;
+                    opis.Background = Brushes.Red;
+                    //opis.TextTrimming = TextTrimming.WordEllipsis;
                     opis.TextWrapping = TextWrapping.Wrap;
                     opis.Foreground = Brushes.Black;
+                    opis.Margin = new Thickness(0, 0, 0, 15);
                     opis.HorizontalAlignment = HorizontalAlignment.Left;
                     proizvodPanel.Children.Add(opis);
 

@@ -11,7 +11,7 @@
         </Grid.RowDefinitions>
         
         <!-- Grid za prikaz trenutnog vremena i radnog vremena -->
-        <Grid Background="LightBlue">
+        <Grid Background="LightBlue" Height="80">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
@@ -20,18 +20,18 @@
 
             
 
-            <StackPanel Orientation="Horizontal">
-                <Image Source="D:\Laki Podaci\Fakultet\IV semestar 2020 2021\Objektno orjentisano programiranje 2 C#\Projekat\Resources\sat.png" Width="20" Height="20" Margin="5"/>
-                <TextBlock x:Name="vremeTextBlock" Grid.Column="1" Text="" FontSize="16" FontWeight="Bold" Margin="0 17 0 0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Image Source="D:\Laki Podaci\Fakultet\IV semestar 2020 2021\Objektno orjentisano programiranje 2 C#\Projekat\Resources\sat.png" Width="30" Height="30" Margin="15 0 5 0"/>
+                <TextBlock x:Name="vremeTextBlock" Grid.Column="1" Text="" FontSize="18" FontWeight="Bold" Margin="10 6 0 0"/>
                 
             </StackPanel>
             <StackPanel>
-                <Grid x:Name="gridpretraga" HorizontalAlignment="Center" Margin="5" VerticalAlignment="Center" Grid.Column="1">
+                <Grid x:Name="gridpretraga" HorizontalAlignment="Center" Margin="10 20" VerticalAlignment="Center" Grid.Column="1">
 
                 </Grid>
             </StackPanel>
 
-            <TextBlock x:Name="radnoVremeTextBlock" Grid.Column="2" FontWeight="Bold" Text="Radno vreme: 08:00h - 21:00h" FontSize="16" Margin="20 17 10 0"/>
+            <TextBlock x:Name="radnoVremeTextBlock" HorizontalAlignment="Right" Height="30" Padding="2" VerticalAlignment="Center" Grid.Column="2" FontWeight="Bold" Text="Radno vreme: 08:00h - 21:00h" FontSize="18" Margin="0 0 20 0"/>
             
         </Grid>
 
@@ -75,7 +75,7 @@
                 <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightBlue" Visibility="Visible">
                     <!-- Ovaj StackPanel sadrži dugmad "Plati" i "Štampaj" -->
                     <StackPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightBlue" Visibility="Visible">
-                        <Button x:Name="korpaButton" Content="Plati" Grid.Row="4" Margin="10" Width="300" Height="60" FontSize="18" HorizontalAlignment="Center" Background="Green" FontWeight="DemiBold" Foreground="White" Click="Plati_Click"/>
+                        <Button x:Name="korpaButton" Content="Plati" Grid.Row="4" Margin="10" Width="300" Height="60"  FontSize="24" HorizontalAlignment="Center" Background="Green" FontWeight="DemiBold" Foreground="White" Click="Plati_Click"/>
                         <Button x:Name="stampajButton"  Content=" 🖨 Štampaj" Grid.Row="4" Margin="10" Width="300" Padding="6" FontSize="18" HorizontalAlignment="Center" Background="Gold" Foreground="Black"  FontWeight="DemiBold" Click="StampajRacun_Click"/>
 
                     </StackPanel>
