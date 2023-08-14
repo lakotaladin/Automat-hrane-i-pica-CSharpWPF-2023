@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -20,9 +21,6 @@ namespace Automat.Stranice
             Proiz = new Proizvod();
             Ocitaj_proizvode();
 
-            // Pocetne vrednosti za doba dana
-            startTimePeriodComboBox.SelectedIndex = 0;
-            endTimePeriodComboBox.SelectedIndex = 0;
         }
 
         public ObservableCollection<Proizvod> Proizvodi { set; get; }
@@ -41,6 +39,7 @@ namespace Automat.Stranice
             get { return proizvod; }
             set { proizvod = value; OnPropertyChanged(); }
         }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -204,7 +203,7 @@ namespace Automat.Stranice
                 textBox.SelectionStart = textBox.Text.Length;
             }
         }
-
+        // Dugme za pretragu u admin panel
         private void BtnPretrazi_Click(object sender, RoutedEventArgs e)
         {
             string pretraga = txtPretraga.Text.ToLower();
@@ -219,7 +218,7 @@ namespace Automat.Stranice
             // Ažuriranje tabele sa rezultatom pretrage
             lvProizvodi.ItemsSource = rezultat.ToList();
         }
-
+        // Dugme za brisanje vrednosti u pretragu
         private void BtnObrisi_Click(object sender, RoutedEventArgs e)
         {
             // Očisti sadržaj inputa za pretragu
@@ -240,42 +239,40 @@ namespace Automat.Stranice
 
         private void BtnSacuvajVreme_Click(object sender, RoutedEventArgs e)
         {
-            DateTime selectedDate = datePicker.SelectedDate ?? DateTime.Today;
             TimeSpan startTime;
             TimeSpan endTime;
 
-            if (TimeSpan.TryParse(startTimeTextBox.Text, out startTime) && TimeSpan.TryParse(endTimeTextBox.Text, out endTime))
+            // Parsiranje unetih stringova u TimeSpan objekte
+            if (TimeSpan.TryParseExact(startTimeTextBox.Text, "h\\:mm", CultureInfo.InvariantCulture, out startTime) &&
+                TimeSpan.TryParseExact(endTimeTextBox.Text, "h\\:mm", CultureInfo.InvariantCulture, out endTime))
             {
-                // Dodajte vrednost perioda (AM ili PM) na vreme
-                if (startTimePeriodComboBox.SelectedItem as string == "PM" && startTime.Hours < 12)
-                {
-                    startTime = startTime.Add(new TimeSpan(12, 0, 0));
-                }
-
-                if (endTimePeriodComboBox.SelectedItem as string == "PM" && endTime.Hours < 12)
-                {
-                    endTime = endTime.Add(new TimeSpan(12, 0, 0));
-                }
-
-                DateTime selectedStartDateTime = selectedDate.Add(startTime);
-                DateTime selectedEndDateTime = selectedDate.Add(endTime);
-
                 // Pozovite ažuriranu metodu iz Db klase za čuvanje vremena rada u bazi
-                db.SacuvajVremeRada(selectedStartDateTime, selectedEndDateTime);
+                db.SacuvajVremeRada(startTime, endTime);
 
                 // Resetujte unose nakon što se vreme sačuva
                 startTimeTextBox.Text = "";
                 endTimeTextBox.Text = "";
-                startTimePeriodComboBox.SelectedIndex = -1;
-                endTimePeriodComboBox.SelectedIndex = -1;
 
-                
+                MessageBox.Show("Vreme rada automata je sačuvano.");
+
+              
             }
             else
             {
-                MessageBox.Show("Unesite validna vremena.");
+                MessageBox.Show("Unesite validna vremena u formatu 'hh:mm'.");
             }
         }
+
+
+
+    
+
+
+
+
+
+
+
 
 
     }

@@ -21,19 +21,13 @@
 
             <!-- Vreme rada automata -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 5 30">
-                <DatePicker x:Name="datePicker" Width="200" Margin="10" SelectedDate="{Binding SelectedDate}" />
+                
                 <TextBlock Text="Unesite vreme početka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="0 0 10 0" />
-                <TextBox x:Name="startTimeTextBox" Width="200" Height="30" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <ComboBox x:Name="startTimePeriodComboBox" Width="50" Margin="10" VerticalAlignment="Center">
-                    <ComboBoxItem>AM</ComboBoxItem>
-                    <ComboBoxItem>PM</ComboBoxItem>
-                </ComboBox>
+                <TextBox x:Name="startTimeTextBox" Width="200" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
                 <TextBlock Text="Unesite vreme završetka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="10" />
-                <TextBox x:Name="endTimeTextBox" Width="200" Height="30" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <ComboBox x:Name="endTimePeriodComboBox" Width="50" Margin="10" VerticalAlignment="Center">
-                    <ComboBoxItem>AM</ComboBoxItem>
-                    <ComboBoxItem>PM</ComboBoxItem>
-                </ComboBox>
+                <TextBox x:Name="endTimeTextBox" Width="200" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                
             </StackPanel>
             <Button Content="Sačuvaj vreme" Click="BtnSacuvajVreme_Click" Width="200" Height="50" FontSize="20" Background="DodgerBlue" Foreground="White" Margin="0 20 15 40" />
             

@@ -11,7 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Documents;
 using System.Printing; 
@@ -27,23 +26,47 @@ namespace Automat
         private List<Proizvod> korpa = new List<Proizvod>();
         private List<Button> dugmadDodajUKorpu = new List<Button>();
         private TextBox pretragaTextBox;
-
-// Glavni program
+        // Brojac za iteme u korpi, kako bi se brisali prozivodi sa lagera za onoliko koliko se proizvoda kupi.
+        public string temp = "";
+        public int brojac = 1;
+        
+        
+        
+        // Glavni program
         public MainWindow()
         {
             InitializeComponent();
             Window_Loaded(null, null);
+            // Trenutno vreme
+            DateTime trenutnoVreme = DateTime.Now;
+
+            // Prikaz radnog vremena automata i upoređivanje sa trenutnim vremenom
+            TimeSpan vremePocetka = db.GetLastInsertedTime1();
+            TimeSpan vremeZavrsetka = db.GetLastInsertedTime();
+
+            Console.WriteLine(vremePocetka.Hours);
+            Console.WriteLine(vremeZavrsetka.Hours);
+
+            if ((vremePocetka.Hours < trenutnoVreme.Hour) && (vremeZavrsetka.Hours > trenutnoVreme.Hour))
+            {
+                radnoVremeTextBlock.Text = "Radno vreme automata: " + vremePocetka.Hours.ToString("D2") + ":" + vremePocetka.Minutes.ToString("D2") + " do " + vremeZavrsetka.Hours.ToString("D2") + ":" + vremeZavrsetka.Minutes.ToString("D2");
+                radnoVremeTextBlock.Background = Brushes.Gold;
+                radnoVremeTextBlock.Height = 20;
+                radnoVremeTextBlock.FontSize = 16;
+            }
+            else
+            {
+                radnoVremeTextBlock.Text = "Automat trenutno ne radi.";
+                radnoVremeTextBlock.Background = Brushes.Gold;
+                radnoVremeTextBlock.Height = 20;
+                korpaButton.IsEnabled = false;
+                stampajButton.IsEnabled = false;
+                potvrdiButton.IsEnabled = false;
+
+            }
 
 
-            // Prikaz radnog vremena automata
-            if (db.RadiLi() == true) {
-                radnoVremeTextBlock.Text = "Radno vreme je od " + db.GetLastInsertedTime1().Hour + ":" + db.GetLastInsertedTime1().Minute + " do " + db.GetLastInsertedTime().Hour + ":" + db.GetLastInsertedTime().Minute;
-            }
-            else {
-                radnoVremeTextBlock.Text = "Automat ne radi";
-            }
-           
-            
+
             //Prikaz trenutnog vremena
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -57,7 +80,7 @@ namespace Automat
             KreirajPretraguUI();
         }
 
-        // Dinamicko kreiranje pretrage
+        // Dinamicko kreiranje pretrage (komponente)
         private void KreirajPretraguUI()
         {
             StackPanel pretragaStackPanel = new StackPanel();
@@ -146,7 +169,7 @@ namespace Automat
                 {
                     StackPanel proizvodPanel = new StackPanel();
                     proizvodPanel.Orientation = Orientation.Vertical;
-                    proizvodPanel.Margin = new Thickness(10);
+                    proizvodPanel.Margin = new Thickness(5);
                     
 
                     if (proizvod.Promocija > 0)
@@ -332,7 +355,7 @@ namespace Automat
                 }
                 else
                 {
-                    MessageBox.Show("Proizvod nije dostupan na lageru.");
+                    MessageBox.Show("Proizvoda nema na lageru.");
                 }
             }
             else
@@ -348,7 +371,7 @@ namespace Automat
 
             if (korpa.Count == 0)
             {
-                MessageBox.Show("Korpa je prazna. Dodajte proizvode pre nego što platite.", "Prazna korpa", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Korpa je prazna. Dodajte proizvode pre nego što platite.", "Prazna korpa!", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }else if (korpa.Count > 3)
             {
@@ -392,6 +415,7 @@ namespace Automat
                     dugme.IsEnabled = korpa.Count < 3;
                 }
 
+                // Racun ukupne cene
                 double ukupnaCena = korpa.Sum(proizvod => proizvod.Cena);
                 double cenaSaPopustom = korpa.Sum(proizvod => proizvod.Cena * (1 - proizvod.Promocija / 100.0));
 
@@ -410,42 +434,68 @@ namespace Automat
                 cenaSaPopustomBlock.Background = Brushes.Gold;
                 cenaSaPopustomBlock.TextAlignment = TextAlignment.Left;
                 cenaSaPopustomBlock.VerticalAlignment = VerticalAlignment.Center;
+                cenaSaPopustomBlock.Margin = new Thickness(0, 0, 0, 10);
                 cenaSaPopustomBlock.FontSize = 20;
                 cenaSaPopustomBlock.FontWeight = FontWeights.Bold;
                 cartStackPanel.Children.Add(cenaSaPopustomBlock);
             }
 
+
+            // Nalov vrste placanja
+
+            TextBlock vrstaPlacanja = new TextBlock();
+            vrstaPlacanja.Text = "Odaberite vrstu plaćanja: ";
+            vrstaPlacanja.TextAlignment = TextAlignment.Center;
+            vrstaPlacanja.FontSize = 20;
+            vrstaPlacanja.VerticalAlignment = VerticalAlignment.Center;
+            vrstaPlacanja.Margin = new Thickness(0, 10, 0, 5);
+            cartStackPanel.Children.Add(vrstaPlacanja);
+
+            // Stack panel sa dugmicima za placanje
+
             StackPanel paymentOptionsPanel = new StackPanel();
             paymentOptionsPanel.Orientation = Orientation.Horizontal;
             paymentOptionsPanel.HorizontalAlignment = HorizontalAlignment.Center;
             paymentOptionsPanel.VerticalAlignment = VerticalAlignment.Center;
+            paymentOptionsPanel.Margin = new Thickness(0, 20, 0, 5);
 
             RadioButton cashRadioButton = new RadioButton();
             cashRadioButton.Content = "💵Gotovina";
-            cashRadioButton.FontWeight = FontWeights.Bold;
+            //cashRadioButton.FontWeight = FontWeights.Bold;
+            cashRadioButton.Margin = new Thickness(4);
             cashRadioButton.FontSize = 20;
             cashRadioButton.HorizontalAlignment = HorizontalAlignment.Center;
+            cashRadioButton.VerticalContentAlignment = VerticalAlignment.Center;
             cashRadioButton.GroupName = "PaymentOptions";
 
             RadioButton cardRadioButton = new RadioButton();
             cardRadioButton.Content = "💳Kartica";
-            cardRadioButton.FontWeight = FontWeights.Bold;
+            //cardRadioButton.FontWeight = FontWeights.Bold;
+            cardRadioButton.Margin = new Thickness(4);
             cardRadioButton.FontSize = 20;
             cardRadioButton.HorizontalAlignment = HorizontalAlignment.Center;
+            cardRadioButton.VerticalContentAlignment = VerticalAlignment.Center;
             cardRadioButton.GroupName = "PaymentOptions";
 
             RadioButton paypalRadioButton = new RadioButton();
             paypalRadioButton.Content = "💸PayPal";
-            paypalRadioButton.FontWeight = FontWeights.Bold;
+            //paypalRadioButton.FontWeight = FontWeights.Bold;
+            paypalRadioButton.Margin = new Thickness(4);
             paypalRadioButton.FontSize = 20;
             paypalRadioButton.HorizontalAlignment = HorizontalAlignment.Center;
+            paypalRadioButton.VerticalContentAlignment = VerticalAlignment.Center;
             paypalRadioButton.GroupName = "PaymentOptions";
+
+
+
+            cashRadioButton.IsChecked = true;
 
             paymentOptionsPanel.Children.Add(cashRadioButton);
             paymentOptionsPanel.Children.Add(cardRadioButton);
             paymentOptionsPanel.Children.Add(paypalRadioButton);
 
             cartStackPanel.Children.Add(paymentOptionsPanel);
+            
         }
 
 
@@ -495,11 +545,13 @@ namespace Automat
         // Dugme za placanje proizvoda
         private void Plati_Click(object sender, RoutedEventArgs e)
         {
+            brojac = 1;
+            temp = "";
             if (korpa.Count == 0)
             {
                 MessageBox.Show("Korpa je prazna. Dodajte proizvode pre nego što izvršite plaćanje.");
             }
-            else if (korpa.Count >= 3)
+            else if (korpa.Count > 3)
             {
                 MessageBox.Show("Moguće je dodati najviše 3 proizvoda u korpu.");
             }
@@ -508,27 +560,42 @@ namespace Automat
                 double ukupnaCena = korpa.Sum(proizvod => proizvod.Cena);
                 double cenaSaPopustom = korpa.Sum(proizvod => proizvod.Cena * (1 - proizvod.Promocija / 100.0));
 
-                // Promenjena poruka i prikaz
-                MessageBox.Show($"Ukupna cena: {ukupnaCena} CRD\n\nCena sa popustom: {cenaSaPopustom} CRD\nUplata je uspešno izvršena!");
+                
 
                 // Smanjivanje lagera
                 foreach (Proizvod proizvod in korpa)
                 {
-                    proizvod.Lager--;
-                    if (proizvod.Lager == 0)
+                    if (temp == proizvod.Sifra)
+                    {
+                        brojac++;
+                    }
+                    temp = proizvod.Sifra;
+                  
+                    if (proizvod.Lager-brojac == 0)
                     {
                         MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
                     }
-                }
-                
+                    else
+                    {
 
-                // Sačuvaj izmene u bazi
-                db.SaveChanges();
+                    proizvod.Lager = proizvod.Lager - brojac;
+                    }
+                   
+                }
+                foreach(Proizvod p in korpa)
+                {
+                    db.IzmeniProizvod(p.Sifra, p);
+                }
+
+
+              
 
                 korpa.Clear();
+                MessageBox.Show("Plaćanje je uspešno izvršeno!");
                 //korpaButton.IsEnabled = false;
                 cartStackPanel.Children.Clear();
                 stampajButton.Visibility = Visibility.Visible;
+
             }
         }
 
