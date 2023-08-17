@@ -23,11 +23,11 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 5 30">
                 
                 <TextBlock Text="Unesite vreme početka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="0 0 10 0" />
-                <TextBox x:Name="startTimeTextBox" Width="130" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" PreviewTextInput="startTimeTextBox_PreviewTextInput"/>
+                <TextBox x:Name="startTimeTextBox" Width="130" Height="30" FontSize="18" Margin="10" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" PreviewTextInput="startTimeTextBox_PreviewTextInput"/>
                 <TextBlock Text="(hh:mm)" FontWeight="DemiBold" FontSize="20"  TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"  />
                 
                 <TextBlock Text="Unesite vreme završetka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="10" />
-                <TextBox x:Name="endTimeTextBox" Width="130" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" PreviewTextInput="endTimeTextBox_PreviewTextInput" />
+                <TextBox x:Name="endTimeTextBox" Width="130" Height="30" Margin="10" FontSize="18" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" PreviewTextInput="endTimeTextBox_PreviewTextInput" />
                 <TextBlock Text="(hh:mm)" FontWeight="DemiBold" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"  />
             </StackPanel>
             <Button Content="Sačuvaj vreme" Click="BtnSacuvajVreme_Click" Width="200" Height="50" FontSize="20" Background="DodgerBlue" Foreground="White" Margin="0 20 15 40" />

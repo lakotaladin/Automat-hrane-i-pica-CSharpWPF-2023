@@ -64,7 +64,7 @@ namespace Automat
             if ((pocetakSati < trenutniSati || (pocetakSati == trenutniSati && pocetakMinuti <= trenutniMinuti)) &&
                 (zavrsetakSati > trenutniSati || (zavrsetakSati == trenutniSati && zavrsetakMinuti >= trenutniMinuti)))
             {
-                radnoVremeTextBlock.Text = "Radno vreme automata: " + pocetakSati.ToString("D2") + ":" + pocetakMinuti.ToString("D2") + " do " + zavrsetakSati.ToString("D2") + ":" + zavrsetakMinuti.ToString("D2");
+                radnoVremeTextBlock.Text = "Radno vreme automata: " + pocetakSati.ToString("D2") + ":" + pocetakMinuti.ToString("D2") + "h" + " do " + zavrsetakSati.ToString("D2") + ":" + zavrsetakMinuti.ToString("D2") + "h";
                 radnoVremeTextBlock.Background = Brushes.Gold;
                 radnoVremeTextBlock.Height = 20;
                 radnoVremeTextBlock.FontSize = 16;

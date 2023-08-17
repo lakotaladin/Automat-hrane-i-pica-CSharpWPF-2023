@@ -324,10 +324,18 @@ namespace Automat.Stranice
             }
         }
 
+
+        // Dugme sacuvaj radno vreme automata
         private void BtnSacuvajVreme_Click(object sender, RoutedEventArgs e)
         {
             TimeSpan startTime;
             TimeSpan endTime;
+
+            
+            if (startTimeTextBox.Text == "" && endTimeTextBox.Text == "")
+            {
+                MessageBox.Show("Polja su prazna, unesite validno vreme.", "Prazno polje", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
             // Parsiranje unetih stringova u TimeSpan objekte
             if (TimeSpan.TryParseExact(startTimeTextBox.Text, "h\\:mm", CultureInfo.InvariantCulture, out startTime) &&
@@ -349,9 +357,6 @@ namespace Automat.Stranice
                 MessageBox.Show("Unesite validna vremena u formatu 'hh:mm'.");
             }
 
-            if (startTimeTextBox.Text == "" && endTimeTextBox.Text == "") {
-                MessageBox.Show("Polja su prazna, unesite validno vreme.", "Prazno polje", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
 
         }
 

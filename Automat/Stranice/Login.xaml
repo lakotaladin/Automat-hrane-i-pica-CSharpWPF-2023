@@ -24,7 +24,7 @@
                 <TextBlock Text="Unesite lozinku: " FontSize="20" Margin="5" Width="300"/>
                 <PasswordBox x:Name="txtLozinka"  FontSize="20"  Width="300" Height="40" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             </StackPanel>
-            <Button Content="Uloguj se" Width="300" Height="40" Background="blue" Foreground="white" FontSize="20" Margin="50 50 0 50" Click="Button_Click"/>
+            <Button Content="Uloguj se" Width="300" Height="40" Background="blue" Foreground="white" FontSize="20" Margin="50 50 0 50" IsDefault="True" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>
