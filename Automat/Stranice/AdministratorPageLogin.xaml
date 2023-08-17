@@ -23,11 +23,12 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 5 30">
                 
                 <TextBlock Text="Unesite vreme početka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="0 0 10 0" />
-                <TextBox x:Name="startTimeTextBox" Width="200" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
-
-                <TextBlock Text="Unesite vreme završetka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="10" />
-                <TextBox x:Name="endTimeTextBox" Width="200" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBox x:Name="startTimeTextBox" Width="130" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" PreviewTextInput="startTimeTextBox_PreviewTextInput"/>
+                <TextBlock Text="(hh:mm)" FontWeight="DemiBold" FontSize="20"  TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"  />
                 
+                <TextBlock Text="Unesite vreme završetka:" FontWeight="DemiBold" FontSize="18" VerticalAlignment="Center" Margin="10" />
+                <TextBox x:Name="endTimeTextBox" Width="130" Height="30" Margin="10" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" PreviewTextInput="endTimeTextBox_PreviewTextInput" />
+                <TextBlock Text="(hh:mm)" FontWeight="DemiBold" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"  />
             </StackPanel>
             <Button Content="Sačuvaj vreme" Click="BtnSacuvajVreme_Click" Width="200" Height="50" FontSize="20" Background="DodgerBlue" Foreground="White" Margin="0 20 15 40" />
             
@@ -57,7 +58,7 @@
                 <TextBlock Text="Ime proizvoda:" FontSize="25" TextAlignment="Center" Foreground="DimGray" />
                 <TextBox x:Name="Iproizvod" Width="300" Height="35" Margin="0 20 10 25" FontSize="20" TextAlignment="Center" BorderBrush="LightGray" />
                 <TextBlock Text="Kredit:"  TextAlignment="Center" FontSize="25" Foreground="DimGray" />
-                    <TextBox x:Name="cena" Width="300" Height="35" Margin="0 20 10 25" TextAlignment="Center" FontSize="25" BorderBrush="LightGray" />
+                    <TextBox x:Name="cena" Width="300" Height="35" Margin="0 20 10 25" TextAlignment="Center" FontSize="25" BorderBrush="LightGray" PreviewTextInput="ValidirajCenu" />
                 <TextBlock Text="Šifra (broj):"  TextAlignment="Center" FontSize="25" Margin="0 0 0 10" Foreground="DimGray" />
                     <TextBox x:Name="txtBK" Text="{Binding Proiz.Sifra,Mode=TwoWay}" Width="300" Height="35"  TextAlignment="Center" FontSize="20" Margin="0 20 15 20" BorderBrush="LightGray" PreviewTextInput="OnPreviewTextInput"/>
                 <TextBlock Text="Promocija (%):" FontSize="25" TextAlignment="Center" Foreground="DimGray" />
@@ -68,7 +69,7 @@
             <StackPanel Grid.Row="0" Grid.Column="1" Background="WhiteSmoke">
                 
                 <TextBlock Text="Lager:"   TextAlignment="Center" FontSize="25" Margin="20 20 15 0" Foreground="DimGray" />
-                    <TextBox x:Name="lager" Width="300" Height="40" Margin="10 20 15 0" TextAlignment="Center" FontSize="25" BorderBrush="LightGray" />
+                    <TextBox x:Name="lager" Width="300" Height="40" Margin="10 20 15 0" TextAlignment="Center" FontSize="25" BorderBrush="LightGray" PreviewTextInput="lager_validacija" />
                 <TextBlock Text="Opis (max 200 karaktera):" TextAlignment="Center"  FontSize="25" Margin="20 10 15 0" Foreground="DimGray" />
                     <TextBox x:Name="opis" Width="350" Height="200" Margin="10 20 15 0" FontSize="25" BorderBrush="LightGray" TextWrapping="Wrap" MaxLength="300" TextChanged="Opis_TextChanged" />
                 </StackPanel>
@@ -102,7 +103,7 @@
             <ListView Margin="0 30" x:Name="lvProizvodi" SelectionChanged="LvProizvodi_SelectionChanged" Height="400" HorizontalAlignment="Center" Width="auto" FontSize="20" BorderBrush="LightGray">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Promocija" Width="100" DisplayMemberBinding="{Binding Promocija}" />
+                        <GridViewColumn Header="Popust (%)" Width="100" DisplayMemberBinding="{Binding Promocija}" />
                         <GridViewColumn Header="Šifra" Width="200" DisplayMemberBinding="{Binding Sifra}" />
                         <GridViewColumn Header="Ime" Width="200" DisplayMemberBinding="{Binding Ime}" />
                         <GridViewColumn Header="Kredit" Width="200" DisplayMemberBinding="{Binding Cena }" />

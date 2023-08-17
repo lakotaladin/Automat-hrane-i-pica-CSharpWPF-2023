@@ -40,7 +40,7 @@ namespace Automat.Stranice
             set { proizvod = value; OnPropertyChanged(); }
         }
 
-
+        // Svi inputi kada se klikne potvrdi za unos proizvoda u bazu
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Proiz.Ime = Iproizvod.Text;
@@ -75,6 +75,92 @@ namespace Automat.Stranice
             Proiz = new Proizvod();
         }
 
+        // Validacija unosa vremena 
+        private void startTimeTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Dozvoli samo brojeve, dvotačku i backspace
+            bool isNumericOrColon = IsNumericTimeInput(e.Text);
+            e.Handled = !isNumericOrColon;
+
+            if (!isNumericOrColon)
+            {
+                MessageBox.Show("Molimo unesite vreme u formatu 'hh:mm'.", "Uneto vreme nije validno", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void endTimeTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Dozvoli samo brojeve, dve tacke i backspace
+            bool isNumericOrColon = IsNumericTimeInput(e.Text);
+            e.Handled = !isNumericOrColon;
+
+            if (!isNumericOrColon)
+            {
+                MessageBox.Show("Molimo unesite vreme u formatu 'hh:mm'.","", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private bool IsNumericTimeInput(string input)
+        {
+            string validChars = "0123456789:";
+
+            foreach (char c in input)
+            {
+                if (!validChars.Contains(c))
+                    return false;
+            }
+
+            return true;
+        }
+
+
+        // validacija lagera
+        private void lager_validacija(object sender, TextCompositionEventArgs e)
+        {
+            // Dozvoli samo brojeve i backspace
+            e.Handled = !daLiJeBroj(e.Text);
+
+            if (!daLiJeBroj(e.Text))
+            {
+                MessageBox.Show("Molimo unesite samo brojeve.","Unos neispravan", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private bool daLiJeBroj(string input)
+        {
+            foreach (char c in input)
+            {
+                if (!char.IsDigit(c))
+                    return false;
+            }
+
+            return true;
+        }
+
+        // Validacija sifre, promocije i cene proizvoda
+        private void ValidirajCenu(object sender, TextCompositionEventArgs e)
+        {
+            // Dozvoli samo brojeve i tačku za decimalne vrednosti
+            e.Handled = !JeBroj(e.Text);
+
+            if (!JeBroj(e.Text))
+            {
+                MessageBox.Show("Molimo unesite validan numerički iznos.");
+            }
+        }
+
+        private bool JeBroj(string unos)
+        {
+            foreach (char c in unos)
+            {
+                if (!char.IsDigit(c) && c != '.')
+                    return false;
+            }
+
+            return true;
+        }
+
+        // Dodavanje slike
         private void BtnDodajSliku_Click(object sender, RoutedEventArgs e)
         {
             // Dijalog za odabir slike
@@ -92,7 +178,7 @@ namespace Automat.Stranice
                 imgPreview.Source = new BitmapImage(new Uri(selectedImagePath));
             }
         }
-
+        // Ocitavanje svih proizvoda
         private void Ocitaj_proizvode()
         {
             Proizvodi = db.GetProizvode();
@@ -108,7 +194,7 @@ namespace Automat.Stranice
             lvProizvodi.ItemsSource = null;
             lvProizvodi.ItemsSource = Proizvodi;
         }
-
+        // Dugme za izmenu proizvoda
         private void BtnIzmeni_Click(object sender, RoutedEventArgs e)
         {
             txtBK.IsReadOnly = false;
@@ -131,7 +217,7 @@ namespace Automat.Stranice
             Proiz = null;
             Proiz = new Proizvod();
         }
-
+        // Selektovanje proizvoda za izmenu podataka o proizvodu
         private void LvProizvodi_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lvProizvodi.SelectedIndex > -1)
@@ -171,7 +257,8 @@ namespace Automat.Stranice
             var win = Window.GetWindow(this);
             win.Close();
         }
-
+        
+        // Logika za brisanje proizvoda na osnovu Id-a
         private void BtnIzbrisi_Click(object sender, RoutedEventArgs e)
         {
             if (lvProizvodi.SelectedItem != null)
@@ -189,7 +276,7 @@ namespace Automat.Stranice
             }
             else
             {
-                MessageBox.Show("Odaberite proizvod za brisanje");
+                MessageBox.Show("Odaberite proizvod za brisanje!", "Greška pri brisanju proizvoda", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -228,7 +315,7 @@ namespace Automat.Stranice
             lvProizvodi.ItemsSource = Proizvodi;
         }
 
-        // Dodat događaj za unos samo brojeva u TextBox txtBK i promocija
+        // Dodat događaj za unos samo brojeva u textbox za sifru i promociju
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!int.TryParse(e.Text, out _) && e.Text != ".")
@@ -253,7 +340,7 @@ namespace Automat.Stranice
                 startTimeTextBox.Text = "";
                 endTimeTextBox.Text = "";
 
-                MessageBox.Show("Vreme rada automata je sačuvano.");
+                MessageBox.Show("Vreme rada automata je sačuvano.", "Vreme automata", MessageBoxButton.OK, MessageBoxImage.Information);
 
               
             }
@@ -261,6 +348,11 @@ namespace Automat.Stranice
             {
                 MessageBox.Show("Unesite validna vremena u formatu 'hh:mm'.");
             }
+
+            if (startTimeTextBox.Text == "" && endTimeTextBox.Text == "") {
+                MessageBox.Show("Polja su prazna, unesite validno vreme.", "Prazno polje", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
         }
 
 

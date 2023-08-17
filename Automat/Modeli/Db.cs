@@ -212,7 +212,7 @@ namespace Automat.Modeli
                 conn.Open();
                 comm.CommandText = $"INSERT INTO [dbo].[VremeRadaAutomata] ([VremePocetka], [VremeZavrsetka]) VALUES ('{vremePocetka}', '{vremeZavrsetka}')";
                 comm.ExecuteNonQuery();
-                MessageBox.Show("Vreme rada automata je sačuvano.");
+                //MessageBox.Show("Vreme rada automata je sačuvano.");
             }
             catch (SqlException e)
             {

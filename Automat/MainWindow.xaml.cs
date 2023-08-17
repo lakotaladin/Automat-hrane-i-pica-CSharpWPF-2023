@@ -39,6 +39,9 @@ namespace Automat
         {
             InitializeComponent();
             Window_Loaded(null, null);
+
+
+
             // Trenutno vreme
             DateTime trenutnoVreme = DateTime.Now;
 
@@ -46,12 +49,22 @@ namespace Automat
             TimeSpan vremePocetka = db.GetLastInsertedTime1();
             TimeSpan vremeZavrsetka = db.GetLastInsertedTime();
 
-            Console.WriteLine(vremePocetka.Hours);
-            Console.WriteLine(vremeZavrsetka.Hours);
+            // Izvuci sate i minute iz trenutnog vremena
+            int trenutniSati = trenutnoVreme.Hour;
+            int trenutniMinuti = trenutnoVreme.Minute;
 
-            if ((vremePocetka.Hours < trenutnoVreme.Hour) && (vremeZavrsetka.Hours > trenutnoVreme.Hour))
+            // Izvuci sate i minute iz vremena početka i završetka rada automata
+            int pocetakSati = vremePocetka.Hours;
+            int pocetakMinuti = vremePocetka.Minutes;
+            int zavrsetakSati = vremeZavrsetka.Hours;
+            int zavrsetakMinuti = vremeZavrsetka.Minutes;
+
+
+            // Upoređivanje samo po satima i minutima
+            if ((pocetakSati < trenutniSati || (pocetakSati == trenutniSati && pocetakMinuti <= trenutniMinuti)) &&
+                (zavrsetakSati > trenutniSati || (zavrsetakSati == trenutniSati && zavrsetakMinuti >= trenutniMinuti)))
             {
-                radnoVremeTextBlock.Text = "Radno vreme automata: " + vremePocetka.Hours.ToString("D2") + ":" + vremePocetka.Minutes.ToString("D2") + " do " + vremeZavrsetka.Hours.ToString("D2") + ":" + vremeZavrsetka.Minutes.ToString("D2");
+                radnoVremeTextBlock.Text = "Radno vreme automata: " + pocetakSati.ToString("D2") + ":" + pocetakMinuti.ToString("D2") + " do " + zavrsetakSati.ToString("D2") + ":" + zavrsetakMinuti.ToString("D2");
                 radnoVremeTextBlock.Background = Brushes.Gold;
                 radnoVremeTextBlock.Height = 20;
                 radnoVremeTextBlock.FontSize = 16;
@@ -60,11 +73,11 @@ namespace Automat
             {
                 radnoVremeTextBlock.Text = "Automat trenutno ne radi.";
                 radnoVremeTextBlock.Background = Brushes.Gold;
-                radnoVremeTextBlock.Height = 20;
+                radnoVremeTextBlock.Height = 16;
+                radnoVremeTextBlock.Height = 25;
                 korpaButton.IsEnabled = false;
                 stampajButton.IsEnabled = false;
                 potvrdiButton.IsEnabled = false;
-
             }
 
 
@@ -306,6 +319,13 @@ namespace Automat
                 else
                 {
                     MessageBox.Show(b[i].Ime + "Slika nije pronađena na datoj putanji: " + b[i].Slika);
+
+                    // Postavljanje default slike ako slika nije pronađena
+                    BitmapImage defaultBitmap = new BitmapImage();
+                    defaultBitmap.BeginInit();
+                    defaultBitmap.UriSource = new Uri("D:\\Laki Podaci\\Fakultet\\IV semestar 2020 2021\\Objektno orjentisano programiranje 2 C#\\Projekat\\Resources\\no-image.png");
+                    defaultBitmap.EndInit();
+                    slikaa.Source = defaultBitmap;
                 }
 
                 proizvodPanel.Children.Add(slikaa);
@@ -337,7 +357,7 @@ namespace Automat
                 opis.Text = $"Opis: {b[i].Opis}";
                 opis.FontSize = 16;
                 opis.MaxWidth = 260;
-                opis.Background = Brushes.Red;
+                //opis.Background = Brushes.Red;
                 //opis.TextTrimming = TextTrimming.WordEllipsis;
                 opis.TextWrapping = TextWrapping.Wrap;
                 opis.Foreground = Brushes.Black;
@@ -366,7 +386,7 @@ namespace Automat
                 }
                 else
                 {
-                    MessageBox.Show("Proizvoda nema na lageru.");
+                    MessageBox.Show("Proizvoda nema na lageru!", "Obaveštenje o proizvodu", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             else
@@ -386,7 +406,7 @@ namespace Automat
                 return;
             }else if (korpa.Count > 3)
             {
-                MessageBox.Show("Korpa je puna, možete da kupite samo 3 proizvoda odjednom!");
+                MessageBox.Show("Korpa je puna, možete da kupite samo 3 proizvoda odjednom!", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             else
@@ -456,6 +476,7 @@ namespace Automat
 
             TextBlock vrstaPlacanja = new TextBlock();
             vrstaPlacanja.Text = "Odaberite vrstu plaćanja: ";
+            vrstaPlacanja.FontWeight = FontWeights.Bold;
             vrstaPlacanja.TextAlignment = TextAlignment.Center;
             vrstaPlacanja.FontSize = 20;
             vrstaPlacanja.VerticalAlignment = VerticalAlignment.Center;
@@ -864,7 +885,7 @@ namespace Automat
                     opis.Text = $"Opis: {b[i].Opis}";
                     opis.FontSize = 16;
                     opis.MaxWidth = 260;
-                    opis.Background = Brushes.Red;
+                    //opis.Background = Brushes.Red;
                     //opis.TextTrimming = TextTrimming.WordEllipsis;
                     opis.TextWrapping = TextWrapping.Wrap;
                     opis.Foreground = Brushes.Black;
