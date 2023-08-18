@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Documents;
 using System.Printing;
-using System.Reflection.Metadata;
 
 namespace Automat
 {
@@ -621,94 +620,8 @@ namespace Automat
 
                 korpa.Clear();
                 MessageBox.Show("Plaćanje je uspešno izvršeno!");
-                //korpaButton.IsEnabled = false;
                 cartStackPanel.Children.Clear();
                 stampajButton.Visibility = Visibility.Visible;
-
-                /*
-                var grupisaniProizvodi = korpa.GroupBy(
-                    proizvod => proizvod,
-                    proizvod => proizvod.Sifra,
-                    (baseProizvod, proizvodi) => new
-                    {
-                        Proizvod = baseProizvod,
-                        Kolicina = proizvodi.Count(),
-                    }
-                ) ;
-
-                foreach (var proizvodSaKolicinom in grupisaniProizvodi)
-                {
-                    var kolicina = proizvodSaKolicinom.Kolicina;
-                    var proizvod = proizvodSaKolicinom.Proizvod;
-
-                    if (proizvod.Lager - kolicina < 0)
-                    {
-                        MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
-                        korpa.Clear();
-                        return;
-                    }
-
-                    proizvod.Lager -= kolicina;
-                }
-                */
-
-                // Smanjivanje lagera
-                /*
-                foreach (Proizvod proizvod in korpa)
-                {
-                    if (proizvod.Lager == 0)
-                    {
-                        MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
-                        korpa.Clear();
-                        return;
-                    }
-
-                    proizvod.Lager--;
-
-                    
-                    if (temp == proizvod.Sifra)
-                    {
-                        brojac++;
-                    }
-                    temp = proizvod.Sifra;
-                  
-                    if (proizvod.Lager - brojac < 0)
-                    { 
-
-                        
-                        MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
-                        placanje = false;
-                        korpa.Clear();
-                        return;
-                    }
-                    else
-                    {   
-                        placanje = true;
-                        proizvod.Lager = proizvod.Lager - brojac;
-                    }
-                    
-                   
-                }
-                */
-
-                /*
-                foreach(var proizvodSaKolicinom in grupisaniProizvodi)
-                {
-                    var p = proizvodSaKolicinom.Proizvod;
-                    db.IzmeniProizvod(p.Sifra, p);
-
-                }
-                    korpa.Clear();
-                    MessageBox.Show("Plaćanje je uspešno izvršeno!");
-                    //korpaButton.IsEnabled = false;
-                    cartStackPanel.Children.Clear();
-                    stampajButton.Visibility = Visibility.Visible;
-
-
-
-
-
-                */
                }
                 
             }
@@ -861,11 +774,11 @@ namespace Automat
             // Prikazivanje PrintPreview-a
             var printDialog = new PrintDialog();
             printDialog.PrintTicket.PageOrientation = PageOrientation.Portrait;
-            // Postavite veličinu dijaloga na približno 100% širine i visine
-            printDialog.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.Unknown, 794, 1123);
+            printDialog.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.ISOA4);
+
             if (printDialog.ShowDialog() == true)
             {
-                var paginator = ((IDocumentPaginatorSource)flowDocument).DocumentPaginator;
+                DocumentPaginator paginator = ((IDocumentPaginatorSource)flowDocument).DocumentPaginator;
                 printDialog.PrintDocument(paginator, "Automat racun");
             }
         }

@@ -40,6 +40,7 @@ namespace Automat.Stranice
             InitializeComponent();
         }
 
+        // Dugme za logovanje
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             K = new Korisnik();
