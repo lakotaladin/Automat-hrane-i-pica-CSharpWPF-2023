@@ -14,10 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Documents;
 using System.Printing;
-
-
-
-
+using System.Reflection.Metadata;
 
 namespace Automat
 {
@@ -318,7 +315,7 @@ namespace Automat
                 }
                 else
                 {
-                    MessageBox.Show(b[i].Ime + "Slika nije pronađena na datoj putanji: " + b[i].Slika);
+                    //MessageBox.Show(b[i].Ime + "Slika nije pronađena na datoj putanji: " + b[i].Slika);
 
                     // Postavljanje default slike ako slika nije pronađena
                     BitmapImage defaultBitmap = new BitmapImage();
@@ -412,7 +409,7 @@ namespace Automat
             else
             {
                 foreach (Proizvod proizvod in korpa)
-        {
+            {
             
             TextBlock cartItemTextBlock = new TextBlock();
             cartItemTextBlock.FontSize = 20;
@@ -577,50 +574,50 @@ namespace Automat
         // Dugme za placanje proizvoda
         private void Plati_Click(object sender, RoutedEventArgs e)
         {
+            bool placanje = false;
             brojac = 1;
             temp = "";
             if (korpa.Count == 0)
             {
                 MessageBox.Show("Korpa je prazna. Dodajte proizvode pre nego što izvršite plaćanje.");
+                return;
             }
             else if (korpa.Count > 3)
             {
                 MessageBox.Show("Moguće je dodati najviše 3 proizvoda u korpu.");
+                return;
             }
             else
             {
                 double ukupnaCena = korpa.Sum(proizvod => proizvod.Cena);
                 double cenaSaPopustom = korpa.Sum(proizvod => proizvod.Cena * (1 - proizvod.Promocija / 100.0));
 
-                
 
-                // Smanjivanje lagera
-                foreach (Proizvod proizvod in korpa)
+                var kolicine = new Dictionary<string, int>();
+
+                foreach (var proizvod in korpa)
                 {
-                    if (temp == proizvod.Sifra)
+                    if (kolicine.ContainsKey(proizvod.Sifra))
                     {
-                        brojac++;
+                        kolicine[proizvod.Sifra]++;
+                    } else
+                    {
+                        kolicine[proizvod.Sifra] = 1;
                     }
-                    temp = proizvod.Sifra;
-                  
-                    if (proizvod.Lager-brojac == 0)
+                }
+
+                foreach (var (sifra, kolicina) in kolicine) {
+                    var proizvod = korpa.Find(p => p.Sifra == sifra);
+                    if (proizvod!.Lager - kolicina < 0)
                     {
                         MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
+                        korpa.Clear();
+                        return;
                     }
-                    else
-                    {
 
-                    proizvod.Lager = proizvod.Lager - brojac;
-                    }
-                   
+                    proizvod.Lager -= kolicina;
+                    db.IzmeniProizvod(proizvod.Sifra, proizvod);
                 }
-                foreach(Proizvod p in korpa)
-                {
-                    db.IzmeniProizvod(p.Sifra, p);
-                }
-
-
-              
 
                 korpa.Clear();
                 MessageBox.Show("Plaćanje je uspešno izvršeno!");
@@ -628,8 +625,93 @@ namespace Automat
                 cartStackPanel.Children.Clear();
                 stampajButton.Visibility = Visibility.Visible;
 
+                /*
+                var grupisaniProizvodi = korpa.GroupBy(
+                    proizvod => proizvod,
+                    proizvod => proizvod.Sifra,
+                    (baseProizvod, proizvodi) => new
+                    {
+                        Proizvod = baseProizvod,
+                        Kolicina = proizvodi.Count(),
+                    }
+                ) ;
+
+                foreach (var proizvodSaKolicinom in grupisaniProizvodi)
+                {
+                    var kolicina = proizvodSaKolicinom.Kolicina;
+                    var proizvod = proizvodSaKolicinom.Proizvod;
+
+                    if (proizvod.Lager - kolicina < 0)
+                    {
+                        MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
+                        korpa.Clear();
+                        return;
+                    }
+
+                    proizvod.Lager -= kolicina;
+                }
+                */
+
+                // Smanjivanje lagera
+                /*
+                foreach (Proizvod proizvod in korpa)
+                {
+                    if (proizvod.Lager == 0)
+                    {
+                        MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
+                        korpa.Clear();
+                        return;
+                    }
+
+                    proizvod.Lager--;
+
+                    
+                    if (temp == proizvod.Sifra)
+                    {
+                        brojac++;
+                    }
+                    temp = proizvod.Sifra;
+                  
+                    if (proizvod.Lager - brojac < 0)
+                    { 
+
+                        
+                        MessageBox.Show("Nema više proizvoda na lageru, molimo vas obratite se vlasniku automata.");
+                        placanje = false;
+                        korpa.Clear();
+                        return;
+                    }
+                    else
+                    {   
+                        placanje = true;
+                        proizvod.Lager = proizvod.Lager - brojac;
+                    }
+                    
+                   
+                }
+                */
+
+                /*
+                foreach(var proizvodSaKolicinom in grupisaniProizvodi)
+                {
+                    var p = proizvodSaKolicinom.Proizvod;
+                    db.IzmeniProizvod(p.Sifra, p);
+
+                }
+                    korpa.Clear();
+                    MessageBox.Show("Plaćanje je uspešno izvršeno!");
+                    //korpaButton.IsEnabled = false;
+                    cartStackPanel.Children.Clear();
+                    stampajButton.Visibility = Visibility.Visible;
+
+
+
+
+
+                */
+               }
+                
             }
-        }
 
         // Logika za input u kome moze samo da se unosi sifra atikla
         private void Broj_TextChanged(object sender, TextChangedEventArgs e)
