@@ -1,4 +1,4 @@
-﻿using Automat.Modeli;
+using Automat.Modeli;
 using Automat.Stranice;
 using System;
 using System.Collections.Generic;
@@ -573,7 +573,6 @@ namespace Automat
         // Dugme za placanje proizvoda
         private void Plati_Click(object sender, RoutedEventArgs e)
         {
-            bool placanje = false;
             brojac = 1;
             temp = "";
             if (korpa.Count == 0)
